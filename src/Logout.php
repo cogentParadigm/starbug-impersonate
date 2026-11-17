@@ -11,10 +11,11 @@ class Logout extends Controller {
   }
   public function __invoke() {
     if (isset($_COOKIE["iuid"])) {
+      // ending an impersonation returns to the users list, still signed in as an admin
       setcookie("iuid", null, 0, $this->cookiePath, null, true, true);
-    } else {
-      $this->session->destroy();
+      return $this->redirect("admin/users");
     }
-    return $this->redirect("admin/users");
+    $this->session->destroy();
+    return $this->redirect("");
   }
 }
